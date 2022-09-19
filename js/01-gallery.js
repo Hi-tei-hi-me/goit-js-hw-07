@@ -15,13 +15,16 @@ gallery.insertAdjacentHTML("afterbegin", galleryMarkup.join(""));
 let modal;
 
 function clickWatch() {
-  document.addEventListener("keydown", EscListener);
+  document.addEventListener("keydown", escListener);
 }
 
 gallery.addEventListener("click", (event) => {
-  const img = event.target;
-  const src = img.dataset.source;
-  const alt = img.alt;
+  const clickTarget = event.target;
+  if (!clickTarget.classList.contains("gallery__image")) {
+    return;
+  }
+  const src = clickTarget.dataset.source;
+  const alt = clickTarget.alt;
   modal = basicLightbox.create(/*html*/ `
     <img src="${src}" alt="${alt}" />
 `);
@@ -30,10 +33,10 @@ gallery.addEventListener("click", (event) => {
 });
 
 function clickUnwatch() {
-  document.removeEventListener("keydown", EscListener);
+  document.removeEventListener("keydown", escListener);
 }
 
-function EscListener(event) {
+function escListener(event) {
   if (event.key === "Escape") {
     modal.close();
     clickUnwatch();
